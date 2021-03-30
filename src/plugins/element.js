@@ -11,7 +11,7 @@ import {
     Container,
     Header,
     Aside,
-    Main
+    Main,
 } from 'element-ui'
 
 Vue.use(Button)

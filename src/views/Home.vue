@@ -37,7 +37,16 @@
 
 <script>
 export default {
+  data(){},
   name: "Home",
+  created(){
+    this.getList()
+  },
+  methods:{
+    getList(){
+      return
+    }
+  },
   components: {},
 };
 </script>

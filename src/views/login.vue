@@ -7,16 +7,16 @@
       </div>
       <!-- 表单 -->
       <el-form class="form" :model="loginform" :rules="rules" ref="ruleForm">
-        <el-form-item prop="username">
+        <el-form-item prop="userName">
           <el-input
             prefix-icon="el-icon-user-solid"
-            v-model="loginform.username"
+            v-model="loginform.userName"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item prop="passWord">
           <el-input
             prefix-icon="el-icon-lock"
-            v-model="loginform.password"
+            v-model="loginform.passWord"
             type="password"
           ></el-input>
         </el-form-item>
@@ -36,8 +36,8 @@ export default {
     return {
       //这是表单数据绑定对象
       loginform: {
-        username: "admin",
-        password: "123456",
+        userName: "admin",
+        passWord: "tiger",
       },
       //表单验证规则对象
       rules: {
@@ -72,19 +72,17 @@ export default {
       //登录前预校验
       console.log(this);
       this.$refs.ruleForm.validate(async (s) => {
-        // console.log(s);
+        console.log(s);
         if (!s) return;
-        const { data: res } = await this.$http.post("login", this.loginform);
-        // console.log(res);
-        if (res.meta.status !== 200) return this.$message.error("err");
-        this.$message.success("success");
-        // console.log(res)
-        //1,将登录成功之后的token，保存到客户端的sessionStorage中
-        window.sessionStorage.setItem('token',res.data.token);
-        //1.1项目中除了登录之外的其他接口，必须在登录之后才能访问
-        //1.2token只应在当前网站打开的期间生效，所以将token保存在sessionStorage中
-        //2，通过编程式导航跳转到后台主页面，路由地址/home
-        this.$router.push('/home');
+        const {data:res}  = await this.axios.get("api/userLogin/authUser",{params:this.loginform});
+        console.log(res)
+      //   // console.log(res);
+      if(res.code === 2000){
+        console.log(1)
+       alert(res.message)
+       window.sessionStorage.setItem('token',res.data.accessToken);
+       this.$router.push('/home');
+      }
       });
     },
   },
